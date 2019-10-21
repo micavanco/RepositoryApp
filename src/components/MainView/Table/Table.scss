@@ -2,5 +2,26 @@
 @import "../../../scss/abstracts/mixins";
 
 .table {
+  max-width: 1200px;
+  width: 90%;
 
+  &__content {
+    border-collapse: collapse;
+    width: 100%;
+
+    &__row {
+
+      &__header {
+        border: 1px solid #bdbdbd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      &__data {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+    }
+  }
 }

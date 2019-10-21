@@ -2,5 +2,22 @@
 @import "../../../scss/abstracts/mixins";
 
 .search-box {
+  @include flexCenter(column);
+  height: 120px;
+  max-width: 1200px;
+  width: 90%;
 
+  &__input {
+    font-size: 16px;
+    border: 1px solid #b3b3b3;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+
+    &:focus {
+      background: #ececec;
+    }
+  }
 }
