@@ -1,10 +1,12 @@
 import React from 'react';
 import './SearchBox.scss';
+import LoginWindow from "./LoginWindow/LoginWindow";
 
-const SearchBoxViewDisplay = () => {
+const SearchBoxViewDisplay = ({onLoginButtonClick}) => {
     return (
         <div className="search-box">
-            <a href="https://github.com/login/oauth/authorize?client_id=">Sign In with GitHub</a>
+            <LoginWindow/>
+            <button type="submit" onClick={onLoginButtonClick}>Login with GitHub</button>
             <input className="search-box__input" type="text" placeholder="Search User repositories"/>
         </div>
     );

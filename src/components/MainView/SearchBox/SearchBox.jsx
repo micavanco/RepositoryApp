@@ -3,7 +3,17 @@ import SearchBoxView from "./SearchBoxView";
 
 export default class SearchBox extends Component {
 
-    render() {
-        return <SearchBoxView/>;
+    constructor(params) {
+        super(params);
+
     }
+
+    onLoginButtonClick() {
+        document.querySelector('.login-box').classList.remove('setInvisible');
+    }
+
+    render() {
+        return <SearchBoxView onLoginButtonClick={this.onLoginButtonClick}/>;
+    }
+
 }
