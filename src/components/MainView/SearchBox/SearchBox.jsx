@@ -6,14 +6,15 @@ export default class SearchBox extends Component {
     constructor(params) {
         super(params);
 
+        this.state = {containerClass: 'setInvisible'};
     }
 
     onLoginButtonClick() {
-        document.querySelector('.login-box').classList.remove('setInvisible');
+        this.setState({containerClass: ''});
     }
 
     render() {
-        return <SearchBoxView onLoginButtonClick={this.onLoginButtonClick}/>;
+        return <SearchBoxView onLoginButtonClick={this.onLoginButtonClick.bind(this)} containerClass={this.state.containerClass}/>;
     }
 
 }

@@ -10,6 +10,31 @@
   margin: auto;
   border: 1px solid black;
   background: #b3b3b3;
+
+  &__close-btn{
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    cursor: pointer;
+
+    &__bar1, &__bar2{
+      width: content-box;
+      height: 4px;
+      margin-bottom: 5px;
+      background: white;
+    }
+
+    &__bar1{
+      transform: rotate(-45deg) translate(-9px, -1px);
+    }
+
+    &__bar2{
+      transform: rotate(45deg) translate(-7px, 3px);
+    }
+  }
+
 }
 
 .setInvisible {

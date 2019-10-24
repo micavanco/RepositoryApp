@@ -1,11 +1,15 @@
 import React from 'react';
 import './LoginWindow.scss';
 
-const LoginWindowViewDisplay = () => {
+const LoginWindowViewDisplay = ({onExitWindowButtonClick, containerClass}) => {
     return (
-        <div className="login-box setInvisible">
+        <div className={'login-box ' + containerClass}>
+            <div className="login-box__close-btn" onClick={onExitWindowButtonClick}>
+                <div className="login-box__close-btn__bar1"></div>
+                <div className="login-box__close-btn__bar2"></div>
+            </div>
             <input className="login-box__username" type="text" placeholder="Username"/>
-            <input className="login-box__password" type="text" placeholder="Username"/>
+            <input className="login-box__password" type="password" placeholder="Password"/>
             <button type="submit">Login</button>
         </div>
     );
