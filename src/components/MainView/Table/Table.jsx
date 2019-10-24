@@ -1,9 +1,28 @@
 import React, { Component } from 'react';
+import {connect} from "react-redux";
 import TableView from "./TableView";
 
-export default class Table extends Component {
+class Table extends Component {
+
+    constructor(params) {
+        super(params);
+
+        this.repositories = [];
+    }
 
     render() {
-        return <TableView/>;
+        console.log(this.props.repositories);
+        if(this.props.repositories && this.props.repositories.data.items.length > 0)
+            this.repositories = this.props.repositories.data.items;
+
+        return <TableView repositories={this.repositories}/>;
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        repositories: state.repositories
+    };
+};
+
+export default connect(mapStateToProps)(Table);

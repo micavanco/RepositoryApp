@@ -1,27 +1,34 @@
 import React from 'react';
 import './Table.scss';
 
-const TableViewDisplay = () => {
+const TableViewDisplay = ({repositories}) => {
     return (
         <div className="table">
             <table className="table__content">
                 <thead className="table__content__row">
                     <tr>
-                        <th className="table__content__row__header">ID</th>
-                        <th className="table__content__row__header">Repo Title</th>
-                        <th className="table__content__row__header">Owner</th>
-                        <th className="table__content__row__header">Stars</th>
-                        <th className="table__content__row__header">Created at</th>
+                        <th className="table__content__row__header" key="id">ID</th>
+                        <th className="table__content__row__header" key="title">Repo Title</th>
+                        <th className="table__content__row__header" key="owner">Owner</th>
+                        <th className="table__content__row__header" key="stars">Stars</th>
+                        <th className="table__content__row__header" key="date">Created at</th>
                     </tr>
                 </thead>
                 <tbody className="table__content__row">
-                    <tr>
-                        <td className="table__content__row__data">Alfreds Futterkiste</td>
-                        <td className="table__content__row__data">Maria Anders</td>
-                        <td className="table__content__row__data">Germany</td>
-                        <td className="table__content__row__data">Maria Anders</td>
-                        <td className="table__content__row__data">Germany</td>
-                    </tr>
+                {
+                    repositories.map((e, i) => {
+                        return (
+                            <tr key={i}>
+                                <td className="table__content__row__data" key={i+'id'}>{e.id}</td>
+                                <td className="table__content__row__data" key={i+'name'}>{e.name}</td>
+                                <td className="table__content__row__data" key={i+'owner'}>{e.owner.login}</td>
+                                <td className="table__content__row__data" key={i+'stars'}>{e.stargazers_count}</td>
+                                <td className="table__content__row__data" key={i+'date'}>{e.created_at}</td>
+                            </tr>
+                        );
+                    })
+                }
+
                 </tbody>
             </table>
         </div>
