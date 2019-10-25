@@ -1,9 +1,20 @@
 import React from 'react';
 import './Table.scss';
 
-const TableViewDisplay = ({repositories}) => {
+const TableViewDisplay = ({repositories, onSelectValueChanged}) => {
     return (
         <div className="table">
+            <div className="table__nav">
+                <select className="table__nav__select" onChange={onSelectValueChanged}>
+                    <option value="5" defaultChecked>5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                </select>
+                <div className="table__nav__pages">{} - {} of {}</div>
+                <div className="table__nav__btn-left">&#10508;</div>
+                <div className="table__nav__btn-right">&#10509;</div>
+            </div>
             <table className="table__content">
                 <thead className="table__content__row">
                     <tr>
