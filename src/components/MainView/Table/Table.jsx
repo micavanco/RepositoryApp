@@ -12,8 +12,9 @@ class Table extends Component {
 
     render() {
         console.log(this.props.repositories);
-        if(this.props.repositories && this.props.repositories.data.items.length > 0)
-            this.repositories = this.props.repositories.data.items;
+        if(this.props.repositories)
+            if(this.props.repositories.data)
+                this.repositories = this.props.repositories.data.items;
 
         return <TableView repositories={this.repositories}/>;
     }

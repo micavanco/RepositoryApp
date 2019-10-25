@@ -2,6 +2,7 @@
 import { combineReducers } from 'redux';
 import { USER_REPOSITORIES } from '../actions/loginUserReposFetched';
 import { USERS_REPOSITORIES } from '../actions/usersReposFetched';
+import { LOGIN_WINDOW } from "../actions/loginWindowState";
 
 
 const repositoriesReducer = (repositories = null, action)=>{
@@ -20,6 +21,18 @@ const repositoriesReducer = (repositories = null, action)=>{
     }
 };
 
+const applicationStateReducer = (applicationState = null, action) => {
+    switch(action.type){
+        case LOGIN_WINDOW:
+            if(action.payload){
+                return action.payload;
+            }
+            return null;
+        default: return applicationState;
+    }
+};
+
 export default combineReducers({
-    repositories: repositoriesReducer
+    repositories: repositoriesReducer,
+    applicationState: applicationStateReducer
 });
