@@ -9,17 +9,22 @@ class Table extends Component {
     constructor(params) {
         super(params);
 
+        localStorage.setItem('last-search', '{"name":"", "page":1}');
+
         this.repositories = [];
         this.state = {pagination: 5, page: 1};
         this.pageFrom = 0;
         this.pageTo = 5;
-        this.total_count = 0;
-        this.total_pages = 0;
+        this.totalCount = 0;
+        this.totalPages = 0;
+        this.searchPage = 1;
     }
 
     onSelectValueChanged(e) {
-        this.pageTo = parseInt(this.pageFrom) + parseInt(e.target.value);
-        this.setState({pagination: parseInt(e.target.value)})
+        const page = Math.ceil(this.pageTo / parseInt(e.target.value));
+        this.pageFrom = (page - 1) * parseInt(e.target.value);
+        this.pageTo = this.pageFrom + parseInt(e.target.value);
+        this.setState({pagination: parseInt(e.target.value), page: page});
     }
 
     onChangePageLeft() {
@@ -27,6 +32,11 @@ class Table extends Component {
         if(page > 1) {
             this.pageFrom -= this.state.pagination;
             this.pageTo -= this.state.pagination;
+            if(this.pageFrom < (this.searchPage * 60) - 60) {
+                const lastSearch = JSON.parse(localStorage.getItem('last-search'));
+                this.searchPage--;
+                this.props.usersRepositories(lastSearch.name, (lastSearch.page - 1));
+            }
             this.setState({page: --page});
         }
 
@@ -34,9 +44,14 @@ class Table extends Component {
 
     onChangePageRight() {
         let page = this.state.page;
-        if(page < this.total_pages) {
+        if(page < this.totalPages) {
             this.pageFrom += this.state.pagination;
             this.pageTo += this.state.pagination;
+            if(this.pageTo > this.searchPage * 60) {
+                const lastSearch = JSON.parse(localStorage.getItem('last-search'));
+                this.searchPage++;
+                this.props.usersRepositories(lastSearch.name, (lastSearch.page + 1));
+            }
             this.setState({page: ++page});
         }
 
@@ -46,17 +61,18 @@ class Table extends Component {
 
         if(this.props.repositories)
             if(this.props.repositories.data) {
-                this.repositories = this.props.repositories.data.items.slice(this.pageFrom, this.pageTo);
-                this.total_count = this.props.repositories.data.total_count;
-                this.total_pages = Math.floor(this.total_count / 30);
+                const arrayFrom = this.pageFrom - (this.searchPage - 1) * 60;
+                const arrayTo = arrayFrom + this.state.pagination;
+                this.repositories = this.props.repositories.data.items.slice(arrayFrom, arrayTo);
+                this.totalCount = this.props.repositories.data.total_count;
+                this.totalPages = Math.floor(this.totalCount / 60);
             }
-
 
         return <TableView repositories={this.repositories}
                           onSelectValueChanged={this.onSelectValueChanged.bind(this)}
                           pageFrom={this.pageFrom}
                           pageTo={this.pageTo}
-                          total_count={this.total_count}
+                          total_count={this.totalCount}
                           onChangePageLeft={this.onChangePageLeft.bind(this)}
                           onChangePageRight={this.onChangePageRight.bind(this)}
         />;
