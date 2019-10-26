@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import {debounce, throttle} from 'throttle-debounce';
+import { debounce } from 'throttle-debounce';
 
 import { usersRepositories } from "../../../redux/actions/usersReposFetched";
 import { loginWindowState } from "../../../redux/actions/loginWindowState";

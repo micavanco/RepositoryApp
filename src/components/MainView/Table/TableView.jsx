@@ -1,7 +1,7 @@
 import React from 'react';
 import './Table.scss';
 
-const TableViewDisplay = ({repositories, onSelectValueChanged, pageFrom, pageTo, total_count, onChangePageLeft, onChangePageRight}) => {
+const TableViewDisplay = ({repositories, onSelectValueChanged, pageFrom, pageTo, total_count, onChangePageLeft, onChangePageRight, onTableHeaderClick}) => {
     return (
         <div className="table">
             <div className="table__nav">
@@ -18,11 +18,11 @@ const TableViewDisplay = ({repositories, onSelectValueChanged, pageFrom, pageTo,
             <table className="table__content">
                 <thead className="table__content__row">
                     <tr>
-                        <th className="table__content__row__header" key="id">ID</th>
-                        <th className="table__content__row__header" key="title">Repo Title</th>
-                        <th className="table__content__row__header" key="owner">Owner</th>
-                        <th className="table__content__row__header" key="stars">Stars</th>
-                        <th className="table__content__row__header" key="date">Created at</th>
+                        <th className="table__content__row__header" key="id" id="id" onClick={onTableHeaderClick}>ID</th>
+                        <th className="table__content__row__header" key="name" id="name" onClick={onTableHeaderClick}>Repo Title</th>
+                        <th className="table__content__row__header" key="owner" id="login" onClick={onTableHeaderClick}>Owner</th>
+                        <th className="table__content__row__header" key="stargazers_count" id="stargazers_count" onClick={onTableHeaderClick}>Stars</th>
+                        <th className="table__content__row__header" key="created_at" id="created_at" onClick={onTableHeaderClick}>Created at</th>
                     </tr>
                 </thead>
                 <tbody className="table__content__row">
@@ -34,7 +34,7 @@ const TableViewDisplay = ({repositories, onSelectValueChanged, pageFrom, pageTo,
                                 <td className="table__content__row__data" key={i+'name'}>{e.name}</td>
                                 <td className="table__content__row__data" key={i+'owner'}>{e.owner.login}</td>
                                 <td className="table__content__row__data" key={i+'stars'}>{e.stargazers_count}</td>
-                                <td className="table__content__row__data" key={i+'date'}>{e.created_at}</td>
+                                <td className="table__content__row__data" key={i+'date'}>{e.created_at.split('T')[0]}</td>
                             </tr>
                         );
                     })

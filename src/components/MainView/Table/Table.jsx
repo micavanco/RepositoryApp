@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import TableView from "./TableView";
-import {bindActionCreators} from "redux";
-import {usersRepositories} from "../../../redux/actions/usersReposFetched";
+import { bindActionCreators } from "redux";
+import { usersRepositories } from "../../../redux/actions/usersReposFetched";
 
 class Table extends Component {
 
@@ -12,12 +12,13 @@ class Table extends Component {
         localStorage.setItem('last-search', '{"name":"", "page":1}');
 
         this.repositories = [];
-        this.state = {pagination: 5, page: 1};
+        this.state = {pagination: 5, page: 1, isASC: true};
         this.pageFrom = 0;
         this.pageTo = 5;
         this.totalCount = 0;
         this.totalPages = 0;
         this.searchPage = 1;
+        this.headerElement = null;
     }
 
     onSelectValueChanged(e) {
@@ -39,7 +40,6 @@ class Table extends Component {
             }
             this.setState({page: --page});
         }
-
     }
 
     onChangePageRight() {
@@ -51,10 +51,57 @@ class Table extends Component {
                 const lastSearch = JSON.parse(localStorage.getItem('last-search'));
                 this.searchPage++;
                 this.props.usersRepositories(lastSearch.name, (lastSearch.page + 1));
+                this.onTableHeaderClick(this.headerElement);
             }
             this.setState({page: ++page});
         }
+    }
 
+    sortTable(header) {
+        let multiplier = 1;
+        if(!this.state.isASC) multiplier = -1;
+        if(header.id !== 'created_at')
+            if(header.id === 'login')
+                this.repositories.sort((a, b) => {
+                    if(a['owner']['login'].toLowerCase() > b['owner']['login'].toLowerCase()) { return -1 * multiplier; }
+                    if(a['owner']['login'].toLowerCase() < b['owner']['login'].toLowerCase()) { return multiplier; }
+                    return 0;
+                });
+            else if(header.id === 'name')
+                this.repositories.sort((a, b) => {
+                    if(a[header.id].toLowerCase() > b[header.id].toLowerCase()) { return -1 * multiplier; }
+                    if(a[header.id].toLowerCase() < b[header.id].toLowerCase()) { return multiplier; }
+                    return 0;
+                });
+            else
+                this.repositories.sort((a, b) => {
+                    if(a[header.id] > b[header.id]) { return -1 * multiplier; }
+                    if(a[header.id] < b[header.id]) { return multiplier; }
+                    return 0;
+                });
+        else
+            this.repositories.sort((a, b) => {
+                if(new Date(a[header.id]).getTime() > new Date(b[header.id]).getTime()) { return -1 * multiplier; }
+                if(new Date(a[header.id]).getTime() < new Date(b[header.id]).getTime()) { return multiplier; }
+                return 0;
+            });
+    }
+
+    onTableHeaderClick(e) {
+        if(this.headerElement)
+            this.headerElement.innerHTML = this.headerElement.innerHTML.split('<')[0];
+
+        const header = e.target;
+        if(header !== this.headerElement)
+            this.setState({isASC: true});
+
+        const arrow = this.state.isASC === true ? '<span>&#8659;</span>' : '<span>&#8657;</span>';
+        header.innerHTML = header.innerHTML + arrow;
+
+        this.sortTable(header);
+
+        this.headerElement = header;
+        this.setState({isASC: !this.state.isASC});
     }
 
     render() {
@@ -64,6 +111,8 @@ class Table extends Component {
                 const arrayFrom = this.pageFrom - (this.searchPage - 1) * 60;
                 const arrayTo = arrayFrom + this.state.pagination;
                 this.repositories = this.props.repositories.data.items.slice(arrayFrom, arrayTo);
+                if(this.headerElement)
+                    this.sortTable(this.headerElement);
                 this.totalCount = this.props.repositories.data.total_count;
                 this.totalPages = Math.floor(this.totalCount / 60);
             }
@@ -75,6 +124,7 @@ class Table extends Component {
                           total_count={this.totalCount}
                           onChangePageLeft={this.onChangePageLeft.bind(this)}
                           onChangePageRight={this.onChangePageRight.bind(this)}
+                          onTableHeaderClick={this.onTableHeaderClick.bind(this)}
         />;
     }
 }

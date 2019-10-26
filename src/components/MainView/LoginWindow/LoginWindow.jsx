@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import LoginWindowView from "./LoginWindowView";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {usersRepositories} from "../../../redux/actions/usersReposFetched";
 import {loginWindowState} from "../../../redux/actions/loginWindowState";
 
 
