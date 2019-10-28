@@ -5,9 +5,9 @@ Recruiting application to display users github repositories in table. Applicatio
 
 ## Screenshots
 ### Main page
-![alt text](https://raw.githubusercontent.com/micavanco/Repository/master/src/assets/main.png)
+![alt text](https://raw.githubusercontent.com/micavanco/RepositoryApp/master/src/assets/main.png)
 ### Login window
-![alt text](https://raw.githubusercontent.com/micavanco/Repository/master/src/assets/login.png)
+![alt text](https://raw.githubusercontent.com/micavanco/RepositoryApp/master/src/assets/login.png)
 
 ## Available Scripts
 
