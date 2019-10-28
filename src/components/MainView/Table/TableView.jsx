@@ -2,6 +2,10 @@ import React from 'react';
 import './Table.scss';
 
 const TableViewDisplay = ({repositories, onSelectValueChanged, pageFrom, pageTo, total_count, onChangePageLeft, onChangePageRight, onTableHeaderClick}) => {
+    const credentials = JSON.parse(localStorage.getItem('credentials'));
+    let username = '';
+    if(credentials)
+        username = credentials.username;
     return (
         <div className="table">
             <div className="table__nav">
@@ -28,8 +32,11 @@ const TableViewDisplay = ({repositories, onSelectValueChanged, pageFrom, pageTo,
                 <tbody className="table__content__row">
                 {
                     repositories.map((e, i) => {
+                        let stylingRow = '';
+                        if(username === e.owner.login)
+                            stylingRow = 'user-repo';
                         return (
-                            <tr key={i}>
+                            <tr className={stylingRow} key={i}>
                                 <td className="table__content__row__data" key={i+'id'}>{e.id}</td>
                                 <td className="table__content__row__data" key={i+'name'}>{e.name}</td>
                                 <td className="table__content__row__data" key={i+'owner'}>{e.owner.login}</td>

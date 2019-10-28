@@ -24,9 +24,18 @@ class SearchBox extends Component {
         this.onSearchRepositoryThrottled(e.target.value);
     }
 
-    onGetData(name) {
-        this.props.usersRepositories(name);
+    onGetData(name, page = 1, searchPage = 1) {
+        this.props.usersRepositories(name, page, searchPage);
     }
+
+    componentDidMount() {
+        const lastSearch = JSON.parse(localStorage.getItem('last-search'));
+        if(lastSearch) {
+            document.querySelector('.search-box__input').value = lastSearch.name;
+            this.onGetData(lastSearch.name, lastSearch.page, lastSearch.searchPage);
+        }
+    }
+
 
     render() {
         return <SearchBoxView

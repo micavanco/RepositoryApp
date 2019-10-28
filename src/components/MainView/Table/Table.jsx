@@ -9,8 +9,6 @@ class Table extends Component {
     constructor(params) {
         super(params);
 
-        localStorage.setItem('last-search', '{"name":"", "page":1}');
-
         this.repositories = [];
         this.state = {pagination: 5, page: 1, isASC: true};
         this.pageFrom = 0;
@@ -33,10 +31,20 @@ class Table extends Component {
         if(page > 1) {
             this.pageFrom -= this.state.pagination;
             this.pageTo -= this.state.pagination;
+            const lastSearch = JSON.parse(localStorage.getItem('last-search'));
+            localStorage.setItem('last-search',
+                `{"name":"${lastSearch.name}"
+            ,"page":${lastSearch.page}
+            ,"searchPage":${(this.state.page - 1)}
+            ,"pageFrom":${this.pageFrom}
+            ,"pageTo":${this.pageTo}
+            ,"pagination":${this.state.pagination}
+            }`);
             if(this.pageFrom < (this.searchPage * 60) - 60) {
-                const lastSearch = JSON.parse(localStorage.getItem('last-search'));
                 this.searchPage--;
-                this.props.usersRepositories(lastSearch.name, (lastSearch.page - 1));
+                this.props.usersRepositories(lastSearch.name, (lastSearch.page - 1), (this.state.page - 1));
+                if(this.headerElement)
+                    this.onTableHeaderClick(this.headerElement);
             }
             this.setState({page: --page});
         }
@@ -47,11 +55,20 @@ class Table extends Component {
         if(page < this.totalPages) {
             this.pageFrom += this.state.pagination;
             this.pageTo += this.state.pagination;
+            const lastSearch = JSON.parse(localStorage.getItem('last-search'));
+            localStorage.setItem('last-search',
+                `{"name":"${lastSearch.name}"
+            ,"page":${lastSearch.page}
+            ,"searchPage":${(this.state.page + 1)}
+            ,"pageFrom":${this.pageFrom}
+            ,"pageTo":${this.pageTo}
+            ,"pagination":${this.state.pagination}
+            }`);
             if(this.pageTo > this.searchPage * 60) {
-                const lastSearch = JSON.parse(localStorage.getItem('last-search'));
                 this.searchPage++;
-                this.props.usersRepositories(lastSearch.name, (lastSearch.page + 1));
-                this.onTableHeaderClick(this.headerElement);
+                this.props.usersRepositories(lastSearch.name, (lastSearch.page + 1), (this.state.page + 1));
+                if(this.headerElement)
+                    this.onTableHeaderClick(this.headerElement);
             }
             this.setState({page: ++page});
         }
@@ -104,8 +121,18 @@ class Table extends Component {
         this.setState({isASC: !this.state.isASC});
     }
 
-    render() {
+    componentDidMount() {
+        const lastSearch = JSON.parse(localStorage.getItem('last-search'));
+        if(lastSearch) {
+            this.pageFrom = lastSearch.pageFrom;
+            this.pageTo = lastSearch.pageTo;
+            this.searchPage = lastSearch.page;
+            this.props.usersRepositories(lastSearch.name, lastSearch.page, lastSearch.searchPage);
+            this.setState({pagination: lastSearch.pagination, page: lastSearch.searchPage});
+        }
+    }
 
+    render() {
         if(this.props.repositories)
             if(this.props.repositories.data) {
                 const arrayFrom = this.pageFrom - (this.searchPage - 1) * 60;

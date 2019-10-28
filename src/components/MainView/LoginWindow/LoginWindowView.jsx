@@ -1,7 +1,7 @@
 import React from 'react';
 import './LoginWindow.scss';
 
-const LoginWindowViewDisplay = ({onExitWindowButtonClick, containerClass}) => {
+const LoginWindowViewDisplay = ({onExitWindowButtonClick, containerClass, onLoginButtonClick}) => {
     return (
         <div className={'login-box ' + containerClass}>
             <div className="login-box__close-btn" onClick={onExitWindowButtonClick}>
@@ -10,7 +10,7 @@ const LoginWindowViewDisplay = ({onExitWindowButtonClick, containerClass}) => {
             </div>
             <input className="login-box__username" type="text" placeholder="Username"/>
             <input className="login-box__password" type="password" placeholder="Password"/>
-            <button type="submit">Login</button>
+            <button type="submit" onClick={onLoginButtonClick}>Login</button>
         </div>
     );
 };

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import LoginWindowView from "./LoginWindowView";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {loginWindowState} from "../../../redux/actions/loginWindowState";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { loginWindowState } from "../../../redux/actions/loginWindowState";
 
 
 class LoginWindow extends Component {
@@ -23,8 +23,18 @@ class LoginWindow extends Component {
         this.props.loginWindowState('setInvisible');
     }
 
+    onLoginButtonClick() {
+        const username = document.querySelector('.login-box__username');
+        const password = document.querySelector('.login-box__password');
+        localStorage.setItem('credentials', `{"username":"${username.value}","password":"${password.value}"}`);
+        this.props.loginWindowState('setInvisible');
+    }
+
     render() {
-        return <LoginWindowView onExitWindowButtonClick={this.onExitWindowButtonClick.bind(this)} containerClass={this.state.containerClass}/>;
+        return <LoginWindowView onExitWindowButtonClick={this.onExitWindowButtonClick.bind(this)}
+                                containerClass={this.state.containerClass}
+                                onLoginButtonClick={this.onLoginButtonClick.bind(this)}
+        />;
     }
 }
 
