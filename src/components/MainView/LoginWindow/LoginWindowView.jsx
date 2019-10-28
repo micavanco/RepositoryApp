@@ -11,7 +11,7 @@ const LoginWindowViewDisplay = ({onExitWindowButtonClick, containerClass, onLogi
             <input className="login-box__username" type="text" placeholder="Username"/>
             <input className="login-box__password" type="password" placeholder="Password"/>
             <div id="warning-message" className="warning-message setInvisible">Login or/and password are incorrect</div>
-            <button type="submit" onClick={onLoginButtonClick}>Login</button>
+            <button className="login-box__login" type="submit" onClick={onLoginButtonClick}>Login</button>
         </div>
     );
 };

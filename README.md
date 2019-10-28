@@ -1,7 +1,13 @@
 # RepositoryApp
 
 ## Description
-Recruiting application to display users github repositories in table. Application written in React.
+Recruiting application to display users github repositories in table. Application written in React. Typing in input box trigger searching github repositories by repository name. Logged users can see their private and public repositories highlighted.
+
+## Screenshots
+### Main page
+![alt text](https://raw.githubusercontent.com/micavanco/Repository/master/src/assets/main.png)
+### Login window
+![alt text](https://raw.githubusercontent.com/micavanco/Repository/master/src/assets/login.png)
 
 ## Available Scripts
 

@@ -3,9 +3,11 @@ import './Table.scss';
 
 const TableViewDisplay = ({repositories, onSelectValueChanged, pageFrom, pageTo, total_count, onChangePageLeft, onChangePageRight, onTableHeaderClick}) => {
     const credentials = JSON.parse(localStorage.getItem('credentials'));
-    let username = '';
+    let username = '', message = '';
     if(credentials)
         username = credentials.username;
+    if(repositories.length === 0)
+        message = 'Repositories not found...';
     return (
         <div className="table">
             <div className="table__nav">
@@ -46,9 +48,9 @@ const TableViewDisplay = ({repositories, onSelectValueChanged, pageFrom, pageTo,
                         );
                     })
                 }
-
                 </tbody>
             </table>
+            { message }
         </div>
     );
 };
