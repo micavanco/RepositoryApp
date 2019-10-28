@@ -5,6 +5,7 @@ import { debounce } from 'throttle-debounce';
 
 import { usersRepositories } from "../../../redux/actions/usersReposFetched";
 import { loginWindowState } from "../../../redux/actions/loginWindowState";
+import { loginUserState } from "../../../redux/actions/loginUserState";
 import SearchBoxView from "./SearchBoxView";
 
 class SearchBox extends Component {
@@ -14,10 +15,15 @@ class SearchBox extends Component {
 
         this.onSearchRepositoryThrottled = debounce(1000, this.onGetData);
         this.props.loginWindowState('setInvisible');
+        this.props.loginUserState(false);
     }
 
     onLoginButtonClick() {
-        this.props.loginWindowState('');
+        if(this.props.userState) {
+            localStorage.removeItem('credentials');
+            this.props.loginUserState(false);
+        }else
+            this.props.loginWindowState('');
     }
 
     onSearchRepository(e) {
@@ -41,14 +47,21 @@ class SearchBox extends Component {
         return <SearchBoxView
             onLoginButtonClick={this.onLoginButtonClick.bind(this)}
             onSearchRepository={this.onSearchRepository.bind(this)}
+            userState={this.props.userState}
         />;
     }
 
 }
 
+const mapStateToProps = (state) => {
+    return {
+        userState: state.userState
+    };
+};
+
 function mapDispatchToProps(dispatch) {
 
-    return bindActionCreators({usersRepositories, loginWindowState}, dispatch);
+    return bindActionCreators({usersRepositories, loginWindowState, loginUserState}, dispatch);
 }
 
-export default connect(null ,mapDispatchToProps)(SearchBox);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBox);

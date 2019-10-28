@@ -141,7 +141,7 @@ class Table extends Component {
                 if(this.headerElement)
                     this.sortTable(this.headerElement);
                 this.totalCount = this.props.repositories.data.total_count;
-                this.totalPages = Math.floor(this.totalCount / 60);
+                this.totalPages = Math.ceil(this.totalCount / this.state.pagination);
             }
 
         return <TableView repositories={this.repositories}
